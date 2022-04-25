@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  node:
+    container_name: SoloNode
+    build: 
+      context: ./
+      dockerfile: ./node.Dockerfile
+    volumes:
+      - ./Backend:/home/Proyecto/Backend
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+
+    environment:
+      - MONGO_URL=mongodb://db:27017/bd
+    
+    links:
+      - db
+    
+  db:
+    container_name: db
+    image: mongo
+    volumes:
+      - ./data:/data/db
+
+    
