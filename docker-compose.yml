@@ -22,7 +22,6 @@ services:
   db:
     container_name: db
     image: mongo
-    volumes:
-      - ./data:/data/db
+    
 
     

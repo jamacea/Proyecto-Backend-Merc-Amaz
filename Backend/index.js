@@ -1,6 +1,6 @@
 const express=require("express")
 let app=express()
-// const mongoose=require("mongoose")
+const {mongoose}=require("./database")
 
 
 
@@ -18,36 +18,23 @@ app.use(( req, res, next ) => {
    })
 //----------------------------------Base de datos------------------------------------------------------------
 
-let {mongoose,router}=require('./database')
-let usuario=require('./Servicios/user')
+app.get('/',async(req,res)=>{
+    res.send('todo bien')
+})
 
-app.use('/',router)
-app.use('/users',usuario)
-// mongo_url= process.env.MONGO_URL || 'mongodb://localhost:27017/bd'
 
-// mongoose.connect(
-//     mongo_url
-//     )
-// .then(() => {
-//     app.get('/',(req,res)=>{
-//         res.send('Si sirvio la conexion a la base de datos saludos steven')
-
-//     })
-// })
-// .catch((e) => {
-//     console.log(e)
-//     app.get('/',(req,res)=>{
-//         res.send('no sirvio la conexion a la base de datos ')
-
-//     })
-// })
-//----------------------------------------------------------------------------------------------------------------
+//Pruebas----------------------------------------------------------------------------------------------------------------
 
 
 
+//---------------------------------------Imports---------------------------------------------------------------
 
-// express.get('/',(req,res)=>{
-//     res.send('Holaaaasadd')
-// })
+const Users=require("./Servicios/User")
+//--------------------------------------Servicios---------------------------------------------------------
+app.use('/users',Users)
+
+
+
+//--------------------------------------Puerto---------------------------------------------------------
 
 app.listen(8080)

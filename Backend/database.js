@@ -1,22 +1,18 @@
 const mongoose=require("mongoose")
-const express=require('express')
-const router=express.Router()
 
 mongo_url= process.env.MONGO_URL || 'mongodb://localhost:27017/bd'
 
-
+let conexion=false
 
 mongoose.connect(mongo_url)
-.then(()=>{ router.get('/',(req,res)=>{res.status(200).send('connected to database')})
-    
-    
+.then(()=>{
+    console.log("Conexión a la base de datos exitosa")
+    conexion=true
 })
 .catch((e) => {
-    console.log(e)
-    router.get('/',(req,res)=>{res.status(200).send('connected to database')})
-    
+   console.log(e) 
 })
 
 
-module.exports = {mongoose,router}
+module.exports = mongoose
 
