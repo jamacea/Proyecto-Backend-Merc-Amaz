@@ -1,11 +1,10 @@
 
 const mongoose = require('mongoose')
-const { mongo } = require('../database')
+// const { mongo } = require('../database')
 
 const {Schema}=mongoose
 
 const Usuario = new Schema ({
-    user_id: mongoose.Types.ObjectId,
     display_name: String,
     username: String,
     password: String

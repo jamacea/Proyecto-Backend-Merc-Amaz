@@ -69,14 +69,14 @@ router.get('/all',async (req,res)=>{
 
 router.post('/register',async (req,res)=>{
     try{
-        const {display_name,username,password}=req.body
+        const {owner_id,display_name,username,password}=req.body
         console.log(username)
         allowed= await validarusuario(username)
         if(allowed){
         const registrar=create(display_name,username,password)
         const newUser= new user_model(registrar)
-        const{_id}=newUser
-        newUser.user_id=_id
+        // const{_id}=newUser
+        // newUser.user_id=_id
         await newUser.save()
         res.status(200).json({"message":"Succesfully created"})
     }else{
@@ -119,6 +119,12 @@ router.post('/',async(req,res)=>{
         res.status(400).json({"message":"Doesn't exist that id"})
     }
 })
+
+
+// router.post('/prev-login',async (req,res)=>{
+
+
+// })
 
 
 
