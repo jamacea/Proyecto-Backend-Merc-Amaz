@@ -10,7 +10,6 @@ const history_model = require("../Models/Model_history")
 //---------------------------------------------------------------------------------------------------------------
 const exist_owner = async (user_id) => {
 	const query = await user_model.findById(user_id)
-	console.log(query)
 	if (query !== null) {
 		return Object.keys(query).length !== 0
 	} else {
@@ -20,7 +19,6 @@ const exist_owner = async (user_id) => {
 
 const exist_post = async (product_id) => {
 	const query = await post_model.findById(product_id)
-	console.log(query)
 	if (query !== null) {
 		return Object.keys(query).length !== 0
 	} else {
@@ -33,7 +31,6 @@ const exist_item = async (item_id) => {
 	const pipeline = [{$match: {"items._id": mongoose.Types.ObjectId(item_id)}}]
 
 	const query = await cart_model.aggregate(pipeline)
-	console.log(query)
 	if (query !== null) {
 		return Object.keys(query).length !== 0
 	} else {
@@ -45,7 +42,6 @@ const exist_cart = async (cart_id) => {
 	const query = await cart_model.findOne({
 		user_id: mongoose.Types.ObjectId(cart_id),
 	})
-	console.log(query)
 	if (query !== null) {
 		return Object.keys(query).length !== 0
 	} else {
@@ -57,7 +53,6 @@ const exist_history = async (user_id) => {
 	const query = await history_model.findOne({
 		user_id: mongoose.Types.ObjectId(user_id),
 	})
-	console.log(query)
 	if (query !== null) {
 		return Object.keys(query).length !== 0
 	} else {
@@ -69,7 +64,6 @@ const cart_for_client = async (user_id) => {
 	const query = await cart_model.findOne({
 		user_id: mongoose.Types.ObjectId(user_id),
 	})
-	console.log(query)
 	if (query !== null) {
 		return Object.keys(query).length !== 0
 	} else {
@@ -188,11 +182,58 @@ router.delete("/", async (req, res) => {
 	}
 })
 
-router.post("/buy", async (req, res) => {
+router.post("/buy/", async (req, res) => {
 	const {user_id} = req.query
 	if (user_id) {
 		const exist__user = await exist_owner(user_id)
 		if (exist__user) {
+			const cartforuser = await cart_for_client(user_id)
+			if (cartforuser) {
+				const exist__history = await exist_history(user_id)
+				if (exist__history) {
+					res
+					const query = await cart_model
+						.findOne({
+							user_id: mongoose.Types.ObjectId(user_id),
+						})
+						.select("-_id")
+					console.log("pasé el query")
+					const {items} = query
+					console.log(items)
+
+					const upd = await history_model.updateOne(
+						{user_id},
+						{$push: {items: items}}
+					)
+
+					console.log("pasé la creacion del documento")
+					const del = await cart_model.deleteOne({
+						user_id: mongoose.Types.ObjectId(user_id),
+					})
+					res.status(200).json(upd)
+				} else {
+					try {
+						const query = await cart_model
+							.findOne({
+								user_id: mongoose.Types.ObjectId(user_id),
+							})
+							.select("-_id")
+						console.log("pasé el query")
+						const {items} = query
+						const doc = new history_model({user_id, items})
+						console.log("pasé la creacion del documento")
+						const del = await cart_model.deleteOne({
+							user_id: mongoose.Types.ObjectId(user_id),
+						})
+						doc.save()
+						res.status(200).json(doc)
+					} catch (e) {
+						res.status(500).json(e)
+					}
+				}
+			} else {
+				res.status(404).json({message: "User doesn't have cart right now"})
+			}
 		} else {
 			res.status(404).json({message: "User_id not found"})
 		}
@@ -200,13 +241,5 @@ router.post("/buy", async (req, res) => {
 		res.status(400).json({message: "Add an user_id"})
 	}
 })
+
 module.exports = router
-
-// const exist__history = await exist_history(user_id)
-// 			if (exist__history) {
-// 				res
-// 					.status(200)
-// 					.json({message: "Pronto haremos esto cuando creemos history"})
-// 			} else {
-
-// 			}
