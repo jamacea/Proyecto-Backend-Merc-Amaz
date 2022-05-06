@@ -27,10 +27,12 @@ app.get("/", async (req, res) => {
 const Users = require("./Servicios/User")
 const Post = require("./Servicios/Post")
 const Cart = require("./Servicios/Cart")
+const History = require("./Servicios/History")
 //--------------------------------------Servicios---------------------------------------------------------
 app.use("/users", Users)
 app.use("/posts", Post)
 app.use("/cart", Cart)
+app.use("/history", History)
 
 //--------------------------------------Puerto---------------------------------------------------------
 

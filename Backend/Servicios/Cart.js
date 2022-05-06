@@ -3,8 +3,9 @@ const {post_model} = require("../Models/Model_post")
 const express = require("express")
 const user_model = require("../Models/Model_user")
 const cart_model = require("../Models/Model_cart")
-const res = require("express/lib/response")
+// const res = require("express/lib/response")
 const router = express.Router()
+const history_model = require("../Models/Model_history")
 
 //---------------------------------------------------------------------------------------------------------------
 const exist_owner = async (user_id) => {
@@ -43,6 +44,30 @@ const exist_item = async (item_id) => {
 const exist_cart = async (cart_id) => {
 	const query = await cart_model.findOne({
 		user_id: mongoose.Types.ObjectId(cart_id),
+	})
+	console.log(query)
+	if (query !== null) {
+		return Object.keys(query).length !== 0
+	} else {
+		return false
+	}
+}
+
+const exist_history = async (user_id) => {
+	const query = await history_model.findOne({
+		user_id: mongoose.Types.ObjectId(user_id),
+	})
+	console.log(query)
+	if (query !== null) {
+		return Object.keys(query).length !== 0
+	} else {
+		return false
+	}
+}
+
+const cart_for_client = async (user_id) => {
+	const query = await cart_model.findOne({
+		user_id: mongoose.Types.ObjectId(user_id),
 	})
 	console.log(query)
 	if (query !== null) {
@@ -149,7 +174,8 @@ router.delete("/", async (req, res) => {
 					{$match: {"items._id": mongoose.Types.ObjectId(item_id)}},
 					{$pull: {items: {_id: mongoose.Types.ObjectId(item_id)}}}
 				)
-				res.status(200).json({upd})
+				const del = await cart_model.deleteOne({items: {$size: 0}})
+				res.status(200).json({upd, del})
 			} catch (e) {
 				console.log(e)
 				res.status(500).json({message: "Server error"})
@@ -162,4 +188,25 @@ router.delete("/", async (req, res) => {
 	}
 })
 
+router.post("/buy", async (req, res) => {
+	const {user_id} = req.query
+	if (user_id) {
+		const exist__user = await exist_owner(user_id)
+		if (exist__user) {
+		} else {
+			res.status(404).json({message: "User_id not found"})
+		}
+	} else {
+		res.status(400).json({message: "Add an user_id"})
+	}
+})
 module.exports = router
+
+// const exist__history = await exist_history(user_id)
+// 			if (exist__history) {
+// 				res
+// 					.status(200)
+// 					.json({message: "Pronto haremos esto cuando creemos history"})
+// 			} else {
+
+// 			}
