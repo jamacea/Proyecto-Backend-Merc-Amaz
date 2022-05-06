@@ -5,7 +5,9 @@ const {Schema} = mongoose
 const CreateCart = new Schema(
 	{
 		user_id: {type: mongoose.Types.ObjectId, ref: "user", required: true},
-		post_id: {type: mongoose.Types.ObjectId, ref: "post", required: true},
+		items: [
+			{item: {type: mongoose.Types.ObjectId, ref: "post", required: true}},
+		],
 	},
 	{versionKey: false}
 )

@@ -15,4 +15,4 @@ const CreatePost = new Schema(
 
 const post_model = mongoose.model("post", CreatePost)
 
-module.exports = post_model
+module.exports = {post_model, CreatePost}

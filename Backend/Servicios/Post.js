@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-const post_model = require("../Models/Model_post")
+const {post_model} = require("../Models/Model_post")
 const express = require("express")
 const user_model = require("../Models/Model_user")
 const router = express.Router()
