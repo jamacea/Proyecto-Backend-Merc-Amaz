@@ -19,21 +19,19 @@ app.use((req, res, next) => {
 app.get("/", async (req, res) => {
 	res.send("todo bien")
 })
-
-//Pruebas----------------------------------------------------------------------------------------------------------------
-
 //---------------------------------------Imports---------------------------------------------------------------
 
 const Users = require("./Servicios/User")
 const Post = require("./Servicios/Post")
 const Cart = require("./Servicios/Cart")
 const History = require("./Servicios/History")
+const Reviews = require("./Servicios/Reviews")
 //--------------------------------------Servicios---------------------------------------------------------
 app.use("/users", Users)
 app.use("/posts", Post)
 app.use("/cart", Cart)
 app.use("/history", History)
-
+app.use("/reviews", Reviews)
 //--------------------------------------Puerto---------------------------------------------------------
 
 app.listen(8080)

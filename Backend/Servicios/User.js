@@ -37,18 +37,6 @@ const id_exist = async (user_id) => {
 	return Boolean(query)
 }
 
-// const build_id= async (_id)=>{
-//     const query=await user_model.()
-// }
-
-// let aver={a:"ab"}
-// let {a}=aver
-// let resultado={a}
-// console.log(resultado)
-
-// console.log(Boolean("username" && "a")) //true
-// console.log(Boolean("username" && "b")) //false
-
 //-----------------------------------------------------------------------------------------------
 
 router.get("/all", async (req, res) => {
@@ -68,8 +56,7 @@ router.post("/register", async (req, res) => {
 		if (allowed) {
 			const registrar = create(display_name, username, password)
 			const newUser = new user_model(registrar)
-			// const{_id}=newUser
-			// newUser.user_id=_id
+
 			await newUser.save()
 			res.status(200).json({message: "Succesfully created"})
 		} else {
@@ -108,7 +95,7 @@ router.post("/", async (req, res) => {
 		}
 	} catch (e) {
 		console.log("error-----" + e)
-		res.status(400).json({message: "Doesn't exist that id"})
+		res.status(400).json({message: "Doesn't exist that user_id"})
 	}
 })
 
@@ -125,32 +112,8 @@ router.get("/prev-login", async (req, res) => {
 			}
 		}
 	} else {
-		res.status(404).json({message: "not found"})
+		res.status(404).json({message: "user_id not found"})
 	}
 })
-
-// Funciona
-// router.post("/update", async (req, res) => {
-// 	const {user_id, lastname} = req.body
-// 	if (user_id && lastname) {
-// 		if (id_exist(user_id)) {
-// 			try {
-// 				const pipeline = [{$set: {lastname: lastname}}]
-// 				const query = await user_model.updateOne(
-// 					{user_id: mongoose.Types.ObjectId(user_id)},
-// 					pipeline
-// 				)
-// 				res.status(200).json(query)
-// 			} catch (e) {
-// 				console.log(e)
-// 				res.status(404).json({message: "Bad request"})
-// 			}
-// 		} else {
-// 			res.status(404).json({message: "user_id doesn't exist"})
-// 		}
-// 	} else {
-// 		res.status(404).json({message: "Bad request"})
-// 	}
-// })
 
 module.exports = router
