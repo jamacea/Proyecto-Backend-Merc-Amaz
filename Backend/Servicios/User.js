@@ -90,7 +90,7 @@ router.post("/", async (req, res) => {
 	}
 })
 
-router.get("/prev-login", async (req, res) => {
+router.post("/prev-login", async (req, res) => {
 	const {user_id} = req.body
 	if (user_id) {
 		const exist = await id_exist(user_id)
