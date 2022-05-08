@@ -39,15 +39,6 @@ const id_exist = async (user_id) => {
 
 //-----------------------------------------------------------------------------------------------
 
-router.get("/all", async (req, res) => {
-	try {
-		const users = await user_model.find()
-		res.send(users)
-	} catch (e) {
-		console.log(e)
-	}
-})
-
 router.post("/register", async (req, res) => {
 	try {
 		const {owner_id, display_name, username, password} = req.body
@@ -85,7 +76,7 @@ router.post("/login", async (req, res) => {
 
 router.post("/", async (req, res) => {
 	try {
-		const {user_id} = req.body
+		const {user_id} = req.query
 		console.log(user_id)
 		const query = await user_model.findById(user_id).exec()
 		if (Object.keys(query)) {
@@ -100,12 +91,12 @@ router.post("/", async (req, res) => {
 })
 
 router.get("/prev-login", async (req, res) => {
-	const {user_id} = req.query
+	const {user_id} = req.body
 	if (user_id) {
 		const exist = await id_exist(user_id)
 		if (exist) {
 			try {
-				const query = await user_model.findById(user_id)
+				const query = await user_model.findById(user_id).limit(1)
 				res.status(200).json(query)
 			} catch (e) {
 				res.status(404).json({message: "not found"})

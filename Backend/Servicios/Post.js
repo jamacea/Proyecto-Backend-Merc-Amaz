@@ -86,29 +86,5 @@ router.get("/", async (req, res) => {
 	}
 })
 
-// router.get('/',async(req,res)=>{
-//     const {user_id}=req.query
-//     console.log(user_id)
-//     if(user_id){
-//         const existe=await exist_owner(user_id)
-//         if(existe){
-
-//             try{
-//             const query= await post_model.find({user_id:mongoose.Types.ObjectId(user_id)})
-//             res.status(200).json(query)}
-//             catch(e){
-//                 console.log(e)
-//                 res.status(500).json({"message":"error"})
-//             }
-
-//         }else{
-//             res.status(404).json({"message":"user doesn't exists"})
-//         }
-
-//     }else{
-//         res.status(404).json({"message":"not a good user id"})
-//     }
-// })
-
 //---------------------------------------------------------------------------------------------------------------
 module.exports = router
