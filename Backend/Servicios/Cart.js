@@ -136,28 +136,6 @@ router.post("/", async (req, res) => {
 	}
 })
 
-// router.post("/", async (req, res) => {
-// 	const {product_id, user_id} = req.body
-// 	if (product_id && user_id) {
-// 		const user_exist = await exist_owner(user_id)
-// 		const post_exist = await exist_post(product_id)
-// 		if (user_exist && post_exist) {
-// 			try {
-// 				const doc = new cart_model({user_id, post_id: product_id})
-// 				await doc.save()
-// 				res.status(200).json(doc)
-// 			} catch (e) {
-// 				console.log(e)
-// 				res.status(500).json({message: "server error"})
-// 			}
-// 		} else {
-// 			res.status(400).json({message: "product_id or user_id doesn't exists"})
-// 		}
-// 	} else {
-// 		res.status(406).json({message: "Bad product_id or user_id"})
-// 	}
-// })
-
 router.delete("/", async (req, res) => {
 	const {item_id} = req.query
 	if (item_id) {
