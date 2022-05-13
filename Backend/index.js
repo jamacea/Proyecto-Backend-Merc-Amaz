@@ -2,7 +2,7 @@ const express = require("express")
 let app = express()
 const {mongoose} = require("./database")
 
-app.use(express.json())
+app.use(express.json(50))
 //----------------------------------------CORS------------------------------------------------------
 
 app.use((req, res, next) => {
